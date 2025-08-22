@@ -6,53 +6,57 @@ public class Wowo {
     private static final Task[] list = new Task[100];
     private static int index = 0;
 
-    private static void greeting() {
+    private static void line() {
         System.out.println(line);
+    }
+
+    private static void greeting() {
+        line();
         System.out.println("Hello! I'm Wowo");
         System.out.println("What can I do for you?");
-        System.out.println(line);
+        line();
     }
 
     private static void addTask(String msg) {
         list[index++] = new Task(msg);
 
-        System.out.println(line);
+        line();
         System.out.println("  added: " + msg);
-        System.out.println(line);
+        line();
     }
 
     private static void list() {
-        System.out.println(line);
+        line();
         for (int i = 0; i < index; i++) {
             System.out.println("  " + (i + 1) + ". " + list[i]);
         }
-        System.out.println(line);
+        line();
     }
 
     private static void goodbye() {
-        System.out.println(line);
+        line();
         System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(line);
+        line();
     }
 
     private static void mark(int index) {
         int idx = index - 1;
 
         list[idx].markDone();
-        System.out.println(line);
+        line();
         System.out.println("Nice! I've marked this task as done:");
         System.out.println("  " + list[idx]);
-        System.out.println(line);
+        line();
     }
 
     private static void unmark(int index) {
         int idx = index - 1;
 
         list[idx].markUndone();
-        System.out.println(line);
+        line();
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println("  " + list[idx]);
-        System.out.println(line);
+        line();
     }
 
     private static boolean tryMarkOrUnmark(String input, boolean mark) {
@@ -64,9 +68,9 @@ public class Wowo {
             if (mark) mark(n); else unmark(n);
             return true;
         } catch (NumberFormatException e) {
-            System.out.println(line);
+            line();
             System.out.println("  (Please provide a valid number)");
-            System.out.println(line);
+            line();
             return true; // we handled the command even if invalid
         }
     }
@@ -86,15 +90,15 @@ public class Wowo {
                 break;
             } else if (input.startsWith("mark ")) {
                 if (!tryMarkOrUnmark(input, true)) {
-                    System.out.println(line);
+                    line();
                     System.out.println("  Usage: mark <number>");
-                    System.out.println(line);
+                    line();
                 }
             } else if (input.startsWith("unmark ")) {
                 if (!tryMarkOrUnmark(input, false)) {
-                    System.out.println(line);
+                    line();
                     System.out.println("  Usage: unmark <number>");
-                    System.out.println(line);
+                    line();
                 }
             } else if (!input.isEmpty()) {
                 addTask(input);
