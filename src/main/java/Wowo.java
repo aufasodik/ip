@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Wowo {
     private static final String name = "Wowo";
     private static final String line = "_".repeat(70);
+    private static final String[] list = new String[100];
+    private static int index = 0;
 
     private static void greeting() {
         System.out.println(line);
@@ -11,9 +13,19 @@ public class Wowo {
         System.out.println(line);
     }
 
-    private static void repeat(String msg) {
+    private static void addTask(String msg) {
+        list[index++] = msg;
+
         System.out.println(line);
-        System.out.println("  " + msg);
+        System.out.println("  added: " + msg);
+        System.out.println(line);
+    }
+
+    private static void list() {
+        System.out.println(line);
+        for (int i = 0; i < index; i++) {
+            System.out.println("  " + (i + 1) + ". " + list[i]);
+        }
         System.out.println(line);
     }
 
@@ -29,11 +41,18 @@ public class Wowo {
         Scanner sc = new Scanner(System.in);
         while (sc.hasNextLine()) {
             String input = sc.nextLine();
+
+            if (input.equalsIgnoreCase("list")) {
+                list();
+                continue;
+            }
+
             if (input.equalsIgnoreCase("bye")) {
                 goodbye();
                 break;
             }
-            repeat(input);
+
+            addTask(input);
         }
     }
 }
