@@ -6,9 +6,7 @@ public class Wowo {
     private static final Task[] list = new Task[100];
     private static int index = 0;
 
-    private static void line() {
-        System.out.println(line);
-    }
+    private static void line() { System.out.println(line); }
 
     private static void greeting() {
         line();
@@ -17,19 +15,56 @@ public class Wowo {
         line();
     }
 
-    private static void addTask(String msg) {
-        list[index++] = new Task(msg);
-
+    private static void showAdded(Task t) {
         line();
-        System.out.println("  added: " + msg);
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + t);
+        System.out.println("Now you have " + index + " tasks in the list.");
         line();
     }
 
-    private static void list() {
+    private static void addTodo(String desc) {
+        Task t = new Todo(desc);
+        list[index++] = t;
+        showAdded(t);
+    }
+
+    private static void addDeadline(String desc, String by) {
+        Task t = new Deadline(desc, by);
+        list[index++] = t;
+        showAdded(t);
+    }
+
+    private static void addEvent(String desc, String from, String to) {
+        Task t = new Event(desc, from, to);
+        list[index++] = t;
+        showAdded(t);
+    }
+
+    private static void listAll() {
         line();
+        System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < index; i++) {
-            System.out.println("  " + (i + 1) + ". " + list[i]);
+            System.out.println((i + 1) + ". " + list[i]);
         }
+        line();
+    }
+
+    private static void mark(int n) {
+        int i = n - 1;
+        list[i].markDone();
+        line();
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("  " + list[i]);
+        line();
+    }
+
+    private static void unmark(int n) {
+        int i = n - 1;
+        list[i].markUndone();
+        line();
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println("  " + list[i]);
         line();
     }
 
@@ -39,39 +74,15 @@ public class Wowo {
         line();
     }
 
-    private static void mark(int index) {
-        int idx = index - 1;
-
-        list[idx].markDone();
-        line();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + list[idx]);
-        line();
-    }
-
-    private static void unmark(int index) {
-        int idx = index - 1;
-
-        list[idx].markUndone();
-        line();
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + list[idx]);
-        line();
-    }
-
-    private static boolean tryMarkOrUnmark(String input, boolean mark) {
-        // input is "mark n" or "unmark n"
+    private static boolean tryMark(String input, boolean done) {
         String[] parts = input.split("\\s+", 2);
         if (parts.length < 2) return false;
         try {
             int n = Integer.parseInt(parts[1].trim());
-            if (mark) mark(n); else unmark(n);
+            if (done) mark(n); else unmark(n);
             return true;
         } catch (NumberFormatException e) {
-            line();
-            System.out.println("  (Please provide a valid number)");
-            line();
-            return true; // we handled the command even if invalid
+            return false;
         }
     }
 
@@ -80,28 +91,40 @@ public class Wowo {
 
         Scanner sc = new Scanner(System.in);
         while (sc.hasNextLine()) {
-            String input = sc.nextLine();
+            String input = sc.nextLine().trim();
 
-            if (input.equalsIgnoreCase("list")) {
-                list();
-                continue;
-            } else if (input.equalsIgnoreCase("bye")) {
+            if (input.equalsIgnoreCase("bye")) {
                 goodbye();
                 break;
+
+            } else if (input.equalsIgnoreCase("list")) {
+                listAll();
+
             } else if (input.startsWith("mark ")) {
-                if (!tryMarkOrUnmark(input, true)) {
-                    line();
-                    System.out.println("  Usage: mark <number>");
-                    line();
-                }
+                tryMark(input, true);
+
             } else if (input.startsWith("unmark ")) {
-                if (!tryMarkOrUnmark(input, false)) {
-                    line();
-                    System.out.println("  Usage: unmark <number>");
-                    line();
-                }
-            } else if (!input.isEmpty()) {
-                addTask(input);
+                tryMark(input, false);
+
+            } else if (input.startsWith("todo ")) {
+                String desc = input.substring(5).trim();
+                if (!desc.isEmpty()) addTodo(desc);
+
+            } else if (input.startsWith("deadline ")) {
+                String rest = input.substring(9).trim();
+                int p = rest.indexOf("/by");
+                String desc = (p == -1) ? rest : rest.substring(0, p).trim();
+                String by   = (p == -1) ? ""   : rest.substring(p + 3).trim();
+                addDeadline(desc, by);
+
+            } else if (input.startsWith("event ")) {
+                String rest = input.substring(6).trim();
+                int pf = rest.indexOf("/from");
+                int pt = rest.indexOf("/to");
+                String desc = (pf == -1) ? rest : rest.substring(0, pf).trim();
+                String from = (pf == -1 || pt == -1) ? "" : rest.substring(pf + 5, pt).trim();
+                String to   = (pt == -1) ? "" : rest.substring(pt + 3).trim();
+                addEvent(desc, from, to);
             }
         }
     }
