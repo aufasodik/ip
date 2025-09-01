@@ -25,4 +25,9 @@ public class Deadline extends Task {
     public String extra() {
         return " (by: " + due + ")";
     }
+
+    @Override
+    public String serialize() {
+        return super.serialize() + "|" + due;
+    }
 }

@@ -11,9 +11,12 @@ public class Wowo {
     private static final String LINE = "_".repeat(70);
 
     private static final List<Task> tasks = new ArrayList<>();
+    private static final Storage storage = new Storage();
 
     /** Prints the horizontal line. */
-    private static void printLine() { System.out.println(LINE); }
+    private static void printLine() {
+        System.out.println(LINE);
+    }
 
     /** Prints the startup greeting. */
     private static void greeting() {
@@ -55,26 +58,29 @@ public class Wowo {
     }
 
     /** Adds a todo task (description required). */
-    private static void addTodo(String desc) throws EmptyDescriptionException {
+    private static void addTodo(String desc) throws EmptyDescriptionException, WowoException {
         if (desc == null || desc.trim().isEmpty()) {
             throw new EmptyDescriptionException();
         }
         Task task = new Todo(desc.trim());
         tasks.add(task);
+        persist();
         showAdded(task);
     }
 
     /** Adds a deadline task */
-    private static void addDeadline(String desc, String by) {
+    private static void addDeadline(String desc, String by) throws WowoException {
         Task task = new Deadline(desc, by);
         tasks.add(task);
+        persist();
         showAdded(task);
     }
 
     /** Adds an event task */
-    private static void addEvent(String desc, String from, String to) {
+    private static void addEvent(String desc, String from, String to) throws WowoException {
         Task t = new Event(desc, from, to);
         tasks.add(t);
+        persist();
         showAdded(t);
     }
 
@@ -89,10 +95,11 @@ public class Wowo {
     }
 
     /** Marks a task as done. */
-    private static void mark(int n) throws InvalidTaskIndexException {
+    private static void mark(int n) throws InvalidTaskIndexException, WowoException {
         checkIndexRange(n);
         int idx = n - 1;
         tasks.get(idx).markDone();
+        persist();
         printLine();
         System.out.println("Good! Now go back to work, I've marked:");
         System.out.println("  " + tasks.get(idx));
@@ -100,10 +107,11 @@ public class Wowo {
     }
 
     /** Marks a task as not done. */
-    private static void unmark(int n) throws InvalidTaskIndexException {
+    private static void unmark(int n) throws InvalidTaskIndexException, WowoException {
         checkIndexRange(n);
         int idx = n - 1;
         tasks.get(idx).markUndone();
+        persist();
         printLine();
         System.out.println("Hey, I thought you've done this. I'm unmarking:");
         System.out.println("  " + tasks.get(idx));
@@ -111,10 +119,11 @@ public class Wowo {
     }
 
     /** Deletes a task. */
-    private static void delete(int n) throws InvalidTaskIndexException {
+    private static void delete(int n) throws InvalidTaskIndexException, WowoException {
         checkIndexRange(n);
         int idx = n - 1;
         Task removed = tasks.remove(idx);
+        persist();
         printLine();
         System.out.println("Noted. I've removed this task:");
         System.out.println("  " + removed);
@@ -129,12 +138,28 @@ public class Wowo {
         printLine();
     }
 
+    private static void persist() throws WowoException {
+        storage.save(tasks);
+    }
+
+    private static void loadOnStartup() {
+        try {
+            tasks.addAll(storage.load());
+        } catch (WowoException e) {
+            printLine();
+            System.out.println("  Warning: Could not load previous data.");
+            System.out.println("  " + e.getMessage());
+            printLine();
+        }
+    }
+
     /**
      * Application entry point.
      *
      * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
+        loadOnStartup();
         greeting();
 
         Scanner sc = new Scanner(System.in);
