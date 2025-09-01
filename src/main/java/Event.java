@@ -1,8 +1,12 @@
-public class Event extends Task {
-    private final String from;
-    private final String to;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String name, String from, String to) {
+public class Event extends Task {
+    private static final DateTimeFormatter OUT_FMT = DateTimeFormatter.ofPattern("MMM d yyyy");
+    private final LocalDate from;
+    private final LocalDate to;
+
+    public Event(String name, LocalDate from, LocalDate to) {
         super(name);
         this.from = from;
         this.to = to;
@@ -15,7 +19,7 @@ public class Event extends Task {
 
     @Override
     public String extra() {
-        return " (from: " + from + " to: " + to + ")";
+        return " (from: " + OUT_FMT.format(from) + " to: " + OUT_FMT.format(to) + ")";
     }
 
     @Override
