@@ -17,4 +17,9 @@ public class Event extends Task {
     public String extra() {
         return " (from: " + from + " to: " + to + ")";
     }
+
+    @Override
+    public String serialize() {
+        return super.serialize() + "|" + from + "|" + to;
+    }
 }

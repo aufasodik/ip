@@ -7,17 +7,30 @@ public abstract class Task {
         this.done = false;
     }
 
-    public void markDone() { this.done = true; }
-    public void markUndone() { this.done = false; }
+    public abstract String type();
+
+    public void markDone() {
+        this.done = true;
+    }
+
+    public void markUndone() {
+        this.done = false;
+    }
 
     private String statusIcon() {
         return done ? "X" : " ";
     }
 
-    public abstract String type();
-
     public String extra() {
         return "";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String serialize() {
+        return String.format("%s|%d|%s", type(), done ? 1 : 0, name);
     }
 
     @Override
