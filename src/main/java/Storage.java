@@ -4,6 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,11 @@ import java.util.List;
  * </pre>
  */
 public final class Storage {
+    private static final DateTimeFormatter[] IN_FMT = new DateTimeFormatter[] {
+            DateTimeFormatter.ISO_LOCAL_DATE,
+            DateTimeFormatter.ofPattern("d/M/uuuu"),
+            DateTimeFormatter.ofPattern("dd/M/uuuu")
+    };
 
     private final Path file;
 
@@ -71,13 +79,16 @@ public final class Storage {
                         if (p.length < 4) {
                             continue; // corrupted line; skip
                         }
-                        t = new Deadline(name, p[3]);
+                        LocalDate due = parseIsoDate(p[3]);
+                        t = new Deadline(name, due);
                         break;
                     case "E":
                         if (p.length < 5) {
                             continue; // corrupted line; skip
                         }
-                        t = new Event(name, p[3], p[4]);
+                        LocalDate from = parseIsoDate(p[3]);       // <── convert String -> LocalDate
+                        LocalDate to   = parseIsoDate(p[4]);
+                        t = new Event(name, from, to);
                         break;
                     default:
                         continue; // unknown type; skip
@@ -104,12 +115,10 @@ public final class Storage {
     public void save(List<Task> tasks) throws WowoException {
         try {
             ensureFileExists();
-
             List<String> lines = new ArrayList<>();
             for (Task t : tasks) {
                 lines.add(t.serialize());
             }
-
             Files.write(
                     file,
                     lines,
@@ -123,6 +132,15 @@ public final class Storage {
         }
     }
 
+    private static LocalDate parseDate(String s) throws WowoException {
+        for (DateTimeFormatter f : IN_FMT) {
+            try {
+                return LocalDate.parse(s, f);
+            } catch (DateTimeParseException ignore) { }
+        }
+        throw new WowoException("Bad date in data file: \"" + s + "\"");
+    }
+
     private void ensureFileExists() throws IOException {
         Path parent = file.getParent();
         if (parent != null) {
@@ -130,6 +148,14 @@ public final class Storage {
         }
         if (Files.notExists(file)) {
             Files.createFile(file);
+        }
+    }
+
+    private static LocalDate parseIsoDate(String raw) throws WowoException {
+        try {
+            return LocalDate.parse(raw.trim()); // expects yyyy-MM-dd
+        } catch (DateTimeParseException e) {
+            throw new WowoException("Invalid date in data file: " + raw, e);
         }
     }
 }

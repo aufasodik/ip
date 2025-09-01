@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +15,12 @@ public class Wowo {
 
     private static final List<Task> tasks = new ArrayList<>();
     private static final Storage storage = new Storage();
+
+    private static final DateTimeFormatter[] INPUT_DATE_PATTERNS = new DateTimeFormatter[] {
+            DateTimeFormatter.ISO_LOCAL_DATE,
+            DateTimeFormatter.ofPattern("d/M/uuuu"),
+            DateTimeFormatter.ofPattern("dd/M/uuuu")
+    };
 
     /** Prints the horizontal line. */
     private static void printLine() {
@@ -70,7 +79,8 @@ public class Wowo {
 
     /** Adds a deadline task */
     private static void addDeadline(String desc, String by) throws WowoException {
-        Task task = new Deadline(desc, by);
+        LocalDate due = parseUserDate(by);
+        Task task = new Deadline(desc, due);
         tasks.add(task);
         persist();
         showAdded(task);
@@ -78,10 +88,12 @@ public class Wowo {
 
     /** Adds an event task */
     private static void addEvent(String desc, String from, String to) throws WowoException {
-        Task t = new Event(desc, from, to);
-        tasks.add(t);
+        LocalDate start = parseUserDate(from);
+        LocalDate end   = parseUserDate(to);
+        Task task = new Event(desc, start, end);
+        tasks.add(task);
         persist();
-        showAdded(t);
+        showAdded(task);
     }
 
     /** Prints the list of task. */
@@ -151,6 +163,14 @@ public class Wowo {
             System.out.println("  " + e.getMessage());
             printLine();
         }
+    }
+
+    private static LocalDate parseUserDate(String text) throws WowoException {
+        for (DateTimeFormatter f : INPUT_DATE_PATTERNS) {
+            try { return LocalDate.parse(text, f); }
+            catch (DateTimeParseException ignore) { }
+        }
+        throw new WowoException("Please use a date like yyyy-MM-dd (e.g., 2019-12-02) or d/M/yyyy.");
     }
 
     /**
