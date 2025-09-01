@@ -1,9 +1,13 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a task that has a due date/time.
  * The due value is stored as free-form text.
  */
 public class Deadline extends Task {
-    private final String due;
+    private static final DateTimeFormatter OUT_FMT = DateTimeFormatter.ofPattern("MMM d yyyy");
+    private final LocalDate due;
 
     /**
      * Creates a new deadline task.
@@ -11,7 +15,7 @@ public class Deadline extends Task {
      * @param name description of the task
      * @param due  free-form due date/time text
      */
-    public Deadline(String name, String due) {
+    public Deadline(String name, LocalDate due) {
         super(name);
         this.due = due;
     }
@@ -23,7 +27,7 @@ public class Deadline extends Task {
 
     @Override
     public String extra() {
-        return " (by: " + due + ")";
+        return " (by: " + OUT_FMT.format(due) + ")";
     }
 
     @Override
