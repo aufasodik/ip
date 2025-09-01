@@ -1,3 +1,5 @@
+package wowo;
+
 import java.util.Scanner;
 
 public class Ui {

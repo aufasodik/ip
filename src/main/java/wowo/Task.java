@@ -1,3 +1,5 @@
+package wowo;
+
 public abstract class Task {
     private final String name;
     private boolean done;
