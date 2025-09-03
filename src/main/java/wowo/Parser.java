@@ -11,7 +11,7 @@ public final class Parser {
     private static final DateTimeFormatter[] INPUT_DATE_PATTERNS = new DateTimeFormatter[] {
             DateTimeFormatter.ISO_LOCAL_DATE,          // 2019-12-02
             DateTimeFormatter.ofPattern("d/M/uuuu"),   // 2/12/2019
-            DateTimeFormatter.ofPattern("dd/M/uuuu")   // 02/12/2019 (optional)
+            DateTimeFormatter.ofPattern("dd/M/uuuu")   // 02/12/2019
     };
 
     public static int parseIndex(String input)
