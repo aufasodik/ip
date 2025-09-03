@@ -19,7 +19,7 @@ public abstract class Task {
 
     /**
      * Return a single letter that represent the type of the task
-     * @return
+     * @return a single letter
      */
     public abstract String type();
 

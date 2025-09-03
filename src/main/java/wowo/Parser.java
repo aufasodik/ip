@@ -117,7 +117,7 @@ public final class Parser {
          * Creates a Holder for description, from date, and to date
          * @param desc the description of the task
          * @param from the starting period of the event
-         * @param to the ending date of the
+         * @param to the ending date of the event
          */
         public EventParts(String desc, LocalDate from, LocalDate to) {
             this.desc = desc; this.from = from; this.to = to;
