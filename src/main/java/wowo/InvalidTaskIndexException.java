@@ -1,5 +1,8 @@
 package wowo;
 
+/**
+ * Thrown when the user wants to do an action for a task-indexing did not exist
+ */
 public class InvalidTaskIndexException extends WowoException {
     public InvalidTaskIndexException() {
         super("COME ON!!! What do you want me to mark if it does not exist.");
