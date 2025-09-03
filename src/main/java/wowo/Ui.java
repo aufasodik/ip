@@ -6,7 +6,9 @@ public class Ui {
     private static final String LINE = "_".repeat(70);
     private final Scanner sc = new Scanner(System.in);
 
-    public void printLine() { System.out.println(LINE); }
+    public void printLine() {
+        System.out.println(LINE);
+    }
 
     public void showWelcome(String botName) {
         printLine();

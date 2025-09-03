@@ -74,26 +74,26 @@ public final class Storage {
 
                 Task t;
                 switch (type) {
-                    case "T":
-                        t = new Todo(name);
-                        break;
-                    case "D":
-                        if (p.length < 4) {
-                            continue; // corrupted line; skip
-                        }
-                        LocalDate due = parseIsoDate(p[3]);
-                        t = new Deadline(name, due);
-                        break;
-                    case "E":
-                        if (p.length < 5) {
-                            continue; // corrupted line; skip
-                        }
-                        LocalDate from = parseIsoDate(p[3]);       // <── convert String -> LocalDate
-                        LocalDate to   = parseIsoDate(p[4]);
-                        t = new Event(name, from, to);
-                        break;
-                    default:
-                        continue; // unknown type; skip
+                case "T":
+                    t = new Todo(name);
+                    break;
+                case "D":
+                    if (p.length < 4) {
+                        continue;
+                    }
+                    LocalDate due = parseIsoDate(p[3]);
+                    t = new Deadline(name, due);
+                    break;
+                case "E":
+                    if (p.length < 5) {
+                        continue;
+                    }
+                    LocalDate from = parseIsoDate(p[3]);
+                    LocalDate to = parseIsoDate(p[4]);
+                    t = new Event(name, from, to);
+                    break;
+                default:
+                    continue;
                 }
 
                 if (done) {
@@ -138,7 +138,9 @@ public final class Storage {
         for (DateTimeFormatter f : IN_FMT) {
             try {
                 return LocalDate.parse(s, f);
-            } catch (DateTimeParseException ignore) { }
+            } catch (DateTimeParseException ignore) {
+                //Intentional ignore
+            }
         }
         throw new WowoException("Bad date in data file: \"" + s + "\"");
     }
