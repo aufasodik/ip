@@ -4,11 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A list for all task managed by the chatbot
+ */
 public class TaskList {
     private final List<Task> tasks = new ArrayList<>();
 
+    /**
+     * Initiate an empty list of tasks
+     */
     public TaskList() { }
 
+    /**
+     * Initiate a task list with an initial value
+     * @param init task that initiate
+     */
     public TaskList(List<Task> init) {
         if (init != null) {
             tasks.addAll(init);
@@ -23,9 +33,14 @@ public class TaskList {
         return tasks.size();
     }
 
-    public Task add(Task t) {
-        tasks.add(t);
-        return t;
+    /**
+     * Add a task to a list
+     * @param task the task that the user wants to add
+     * @return the task
+     */
+    public Task add(Task task) {
+        tasks.add(task);
+        return task;
     }
 
     public Task getOneBased(int n) throws InvalidTaskIndexException {
@@ -33,17 +48,35 @@ public class TaskList {
         return tasks.get(n - 1);
     }
 
+    /**
+     * Delete a task by index from the list
+     * @param n the index number of the task
+     * @return the task that got deleted
+     * @throws InvalidTaskIndexException if the index does not point to a task
+     */
     public Task deleteOneBased(int n) throws InvalidTaskIndexException {
         checkIndexRange(n);
         return tasks.remove(n - 1);
     }
 
+    /**
+     * Mark a task by index from the list
+     * @param n the index number of the task
+     * @return the task that wants to be marked
+     * @throws InvalidTaskIndexException if the index does not point to a task
+     */
     public Task markOneBased(int n) throws InvalidTaskIndexException {
         Task t = getOneBased(n);
         t.markDone();
         return t;
     }
 
+    /**
+     * Unmark a task by index from the list
+     * @param n the index number of the task
+     * @return the task that wants to be unmarked
+     * @throws InvalidTaskIndexException if the index does not point to a task
+     */
     public Task unmarkOneBased(int n) throws InvalidTaskIndexException {
         Task t = getOneBased(n);
         t.markUndone();
