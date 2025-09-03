@@ -67,13 +67,13 @@ public class Wowo {
 
                 } else if (input.startsWith("deadline ")) {
                     var p = Parser.parseDeadline(input);
-                    var t = tasks.add(new Deadline(p.desc, p.due));  // <-- use p.due (LocalDate)
+                    var t = tasks.add(new Deadline(p.desc, p.due));
                     persist();
                     ui.showAdded(t, tasks.size());
 
                 } else if (input.startsWith("event ")) {
                     var p = Parser.parseEvent(input);
-                    var t = tasks.add(new Event(p.desc, p.from, p.to)); // or LocalDate later
+                    var t = tasks.add(new Event(p.desc, p.from, p.to));
                     persist();
                     ui.showAdded(t, tasks.size());
 
