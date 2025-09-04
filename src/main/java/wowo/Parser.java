@@ -75,7 +75,8 @@ public final class Parser {
         return new EventParts(desc, fromDate, toDate);
     }
 
-    /** Parses a "todo" command
+    /**
+     * Parses a "todo" command
      * @param input The raw user command
      * @return the description of the task
      * @throws EmptyDescriptionException if the input is missing the description
