@@ -70,4 +70,24 @@ public class Ui {
         System.out.println("  " + message);
         printLine();
     }
+
+    /**
+     * Shows tasks that matched a find search.
+     *
+     * @param matches tasks that matched
+     */
+    public void showMatches(Iterable<Task> matches) {
+        printLine();
+        System.out.println("Here are the matching tasks in your list:");
+        int i = 1;
+        boolean any = false;
+        for (Task t : matches) {
+            any = true;
+            System.out.println(i++ + ". " + t);
+        }
+        if (!any) {
+            System.out.println("(none)");
+        }
+        printLine();
+    }
 }

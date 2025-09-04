@@ -35,6 +35,15 @@ public abstract class Task {
         return String.format("%s|%d|%s", type(), done ? 1 : 0, name);
     }
 
+    /**
+     * Check if a task has a matching keyword
+     * @param keyword keyword to check
+     * @return true if the task matches, false otherwise
+     */
+    public boolean matches(String keyword) {
+        return name.toLowerCase().contains(keyword.toLowerCase());
+    }
+
     @Override
     public String toString() {
         return "[" + type() + "] " + "[" + statusIcon() + "] " + name + extra();
