@@ -23,12 +23,12 @@ public class Deadline extends Task {
     }
 
     @Override
-    public String type() {
+    public String getType() {
         return "D";
     }
 
     @Override
-    public String extra() {
+    public String extraString() {
         return " (by: " + OUT_FMT.format(due) + ")";
     }
 

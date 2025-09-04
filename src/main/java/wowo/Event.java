@@ -24,12 +24,12 @@ public class Event extends Task {
     }
 
     @Override
-    public String type() {
+    public String getType() {
         return "E";
     }
 
     @Override
-    public String extra() {
+    public String extraString() {
         return " (from: " + OUT_FMT.format(from) + " to: " + OUT_FMT.format(to) + ")";
     }
 

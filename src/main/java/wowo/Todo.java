@@ -13,7 +13,7 @@ public class Todo extends Task {
     }
 
     @Override
-    public String type() {
+    public String getType() {
         return "T";
     }
 }

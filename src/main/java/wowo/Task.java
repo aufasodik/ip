@@ -21,7 +21,7 @@ public abstract class Task {
      * Return a single letter that represent the type of the task
      * @return a single letter
      */
-    public abstract String type();
+    public abstract String getType();
 
     /**
      * Turn the status as done
@@ -49,7 +49,7 @@ public abstract class Task {
      * This is used for some task that have an extra information
      * @return based on the type of the task. nothing for todo,due date for deadline, or from and to date for event
      */
-    public String extra() {
+    public String extraString() {
         return "";
     }
 
@@ -62,7 +62,7 @@ public abstract class Task {
      * @return the serialized record
      */
     public String serialize() {
-        return String.format("%s|%d|%s", type(), done ? 1 : 0, name);
+        return String.format("%s|%d|%s", getType(), done ? 1 : 0, name);
     }
 
     /**
@@ -76,6 +76,6 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return "[" + type() + "] " + "[" + statusIcon() + "] " + name + extra();
+        return "[" + getType() + "] " + "[" + statusIcon() + "] " + name + extraString();
     }
 }

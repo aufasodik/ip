@@ -43,7 +43,7 @@ public class TaskList {
         return task;
     }
 
-    public Task getOneBased(int n) throws InvalidTaskIndexException {
+    public Task getTask(int n) throws InvalidTaskIndexException {
         checkIndexRange(n);
         return tasks.get(n - 1);
     }
@@ -66,7 +66,7 @@ public class TaskList {
      * @throws InvalidTaskIndexException if the index does not point to a task
      */
     public Task markOneBased(int n) throws InvalidTaskIndexException {
-        Task t = getOneBased(n);
+        Task t = getTask(n);
         t.markDone();
         return t;
     }
@@ -78,7 +78,7 @@ public class TaskList {
      * @throws InvalidTaskIndexException if the index does not point to a task
      */
     public Task unmarkOneBased(int n) throws InvalidTaskIndexException {
-        Task t = getOneBased(n);
+        Task t = getTask(n);
         t.markUndone();
         return t;
     }
