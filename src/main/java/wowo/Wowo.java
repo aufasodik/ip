@@ -77,6 +77,11 @@ public class Wowo {
                     persist();
                     ui.showAdded(t, tasks.size());
 
+                } else if (input.startsWith("find ")) {
+                    String keyword = Parser.parseFind(input);
+                    var matches = tasks.find(keyword);
+                    ui.showMatches(matches);
+
                 } else if (!input.isEmpty()) {
                     throw new UnknownCommandException();
                 }

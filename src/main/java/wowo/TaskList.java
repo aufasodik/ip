@@ -88,4 +88,20 @@ public class TaskList {
             throw new InvalidTaskIndexException();
         }
     }
+
+    /**
+     * Returns a list of tasks that match with the keyword
+     *
+     * @param keyword search term
+     * @return list of matching tasks
+     */
+    public List<Task> find(String keyword) {
+        List<Task> out = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.matches(keyword)) {
+                out.add(t);
+            }
+        }
+        return out;
+    }
 }

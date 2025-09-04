@@ -104,8 +104,23 @@ public final class Parser {
     }
 
     /**
-     * Holder for deadline command.
+     * Parses a find command.
+     *
+     * @param input the raw user input
+     * @return the keyword to search for
+     * @throws EmptyDescriptionException if the keyword is missing/blank
      */
+    public static String parseFind(String input) throws EmptyDescriptionException {
+        // "find" (length 4). Allow either exactly "find" (error) or "find <keyword>"
+        String keyword = input.length() > 4 ? input.substring(5).trim() : "";
+        if (keyword.isEmpty()) {
+            throw new EmptyDescriptionException();
+        }
+        return keyword;
+    }
+    /**
+    * Holder for deadline command.
+    */
     public static final class DeadlineParts {
         public final String desc;
         public final LocalDate due;
