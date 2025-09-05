@@ -27,6 +27,6 @@ public class TaskListTest {
         tasks.add(task);
 
         assertEquals(1, tasks.size());
-        assertEquals("Read book", tasks.getOneBased(1).getName());
+        assertEquals("Read book", tasks.getTask(1).getName());
     }
 }

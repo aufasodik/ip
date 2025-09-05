@@ -1,0 +1,2 @@
+T|0|things
+E|0|hackathon briefing|2025-09-05|2025-09-05
