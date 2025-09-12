@@ -92,6 +92,94 @@ public class Wowo {
         }
     }
 
+    public String getResponse(String raw) {
+        String input = raw == null ? "" : raw.trim();
+        if (input.isEmpty()) {
+            return "";
+        }
+
+        if (input.equalsIgnoreCase("bye")) {
+            return "Bye. Don't forget to do your chores!";
+        }
+
+        try {
+            if (input.equalsIgnoreCase("list")) {
+                return formatList(tasks.asList());
+
+            } else if (input.startsWith("mark ")) {
+                Task t = tasks.markOneBased(Parser.parseIndex(input));
+                persist();
+                return "Marked as done:\n  " + t;
+
+            } else if (input.startsWith("unmark ")) {
+                Task t = tasks.unmarkOneBased(Parser.parseIndex(input));
+                persist();
+                return "Marked as not done yet:\n  " + t;
+
+            } else if (input.startsWith("delete ")) {
+                Task removed = tasks.deleteOneBased(Parser.parseIndex(input));
+                persist();
+                return "Removed:\n  " + removed + "\nNow you have " + tasks.size() + " tasks.";
+
+            } else if (input.startsWith("todo")) {
+                String desc = Parser.parseTodoDesc(input);
+                Task t = tasks.add(new Todo(desc));
+                persist();
+                return "Added:\n  " + t + "\nNow you have " + tasks.size() + " tasks.";
+
+            } else if (input.startsWith("deadline ")) {
+                var p = Parser.parseDeadline(input);
+                Task t = tasks.add(new Deadline(p.desc, p.due));
+                persist();
+                return "Added:\n  " + t + "\nNow you have " + tasks.size() + " tasks.";
+
+            } else if (input.startsWith("event ")) {
+                var p = Parser.parseEvent(input);
+                Task t = tasks.add(new Event(p.desc, p.from, p.to));
+                persist();
+                return "Added:\n  " + t + "\nNow you have " + tasks.size() + " tasks.";
+
+            } else if (input.startsWith("find ")) {
+                String keyword = Parser.parseFind(input);
+                var matches = tasks.find(keyword);
+                return formatMatches(matches);
+
+            } else {
+                throw new UnknownCommandException();
+            }
+        } catch (WowoException e) {
+            return e.getMessage();
+        }
+    }
+
+    private String formatList(List<Task> list) {
+        if (list.isEmpty()) {
+            return "Your list is empty.";
+        }
+
+        StringBuilder sb = new StringBuilder("Here are your tasks:\n");
+
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(i + 1).append(". ").append(list.get(i)).append('\n');
+        }
+
+        return sb.toString().trim();
+    }
+
+    private String formatMatches(List<Task> list) {
+        if (list.isEmpty()) {
+            return "No matching tasks found.";
+        }
+
+        StringBuilder sb = new StringBuilder("Here are the matching tasks:\n");
+
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(i + 1).append(". ").append(list.get(i)).append('\n');
+        }
+
+        return sb.toString().trim();
+    }
+
     /**
      * Application entry point.
      *
