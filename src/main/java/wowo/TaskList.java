@@ -73,6 +73,7 @@ public class TaskList {
 
     /**
      * Unmark a task by index from the list
+     *
      * @param n the index number of the task
      * @return the task that wants to be unmarked
      * @throws InvalidTaskIndexException if the index does not point to a task
@@ -103,5 +104,16 @@ public class TaskList {
             }
         }
         return out;
+    }
+
+    /**
+     * Add multiple tasks
+     *
+     * @param tasks to be added
+     */
+    public void addMany(Task... tasks) {
+        for (Task t : tasks) {
+            add(t);
+        }
     }
 }
