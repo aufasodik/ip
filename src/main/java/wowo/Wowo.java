@@ -22,8 +22,6 @@ public class Wowo {
             List<Task> loaded = storage.load();
             // no-op; we just want the list
             tasks.asList();
-            // Instead, you can new TaskList(loaded) and keep a mutable reference:
-            // but for minimal change, do:
             loaded.forEach(tasks::add);
         } catch (WowoException e) {
             ui.showWarning("Warning: Could not load previous data.\n  " + e.getMessage());

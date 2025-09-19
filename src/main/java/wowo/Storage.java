@@ -34,7 +34,7 @@ public final class Storage {
      * Creates a storage object that uses {@code ./data/duke.txt}.
      */
     public Storage() {
-        this(Paths.get("data", "duke.txt"));
+        this(Paths.get("data", "wowo.txt"));
     }
 
     /**
@@ -63,6 +63,7 @@ public final class Storage {
                 if (raw == null || raw.isBlank()) {
                     continue;
                 }
+                // Split the line into parts using " | " as the delimiter
                 String[] p = raw.split("\\s*\\|\\s*");
                 if (p.length < 3) {
                     // Corrupted/unknown -> skip quietly

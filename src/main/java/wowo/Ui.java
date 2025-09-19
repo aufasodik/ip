@@ -1,7 +1,8 @@
 package wowo;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.stream.IntStream;
 /**
  * This class is responsible for reading and printing user command
  */
@@ -52,10 +53,13 @@ public class Ui {
     public void showList(Iterable<Task> tasks) {
         printLine();
         System.out.println("Your list:");
-        int i = 1;
-        for (Task t : tasks) {
-            System.out.println(i++ + ". " + t);
-        }
+
+        var list = new ArrayList<Task>();
+        tasks.forEach(list::add);
+
+        IntStream.range(0, list.size())
+                .forEach(i -> System.out.println((i + 1) + ". " + list.get(i)));
+
         printLine();
     }
 
