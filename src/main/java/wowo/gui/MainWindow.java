@@ -34,6 +34,11 @@ public class MainWindow {
     /** Called by FXMLLoader after @FXML fields are injected. */
     @FXML
     public void initialize() {
+        assert scrollPane != null : "FXML injection failed: scrollPane is null";
+        assert dialogContainer != null : "FXML injection failed: dialogContainer is null";
+        assert userInput != null : "FXML injection failed: userInput is null";
+        assert sendButton != null : "FXML injection failed: sendButton is null";
+
         // auto-scroll when new dialogs are added
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
@@ -50,6 +55,10 @@ public class MainWindow {
     /** Send button and Enter key handler. */
     @FXML
     private void handleUserInput() {
+        assert userInput != null : "userInput field must not be null";
+        assert dialogContainer != null : "dialogContainer must not be null";
+        assert bot != null : "Bot must be initialized before handling input";
+
         String input = userInput.getText();
         if (input == null || input.isBlank()) {
             return;

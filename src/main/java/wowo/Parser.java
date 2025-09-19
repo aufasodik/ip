@@ -23,8 +23,7 @@ public final class Parser {
      * @throws EmptyDescriptionException if the index part is missing
      * @throws NonIntegerIndexException if the index part is not a number
      */
-    public static int parseIndex(String input)
-            throws EmptyDescriptionException, NonIntegerIndexException {
+    public static int parseIndex(String input) throws EmptyDescriptionException, NonIntegerIndexException {
         String[] parts = input.split("\\s+", 2);
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new EmptyDescriptionException();
@@ -132,7 +131,8 @@ public final class Parser {
          */
         public DeadlineParts(String desc, LocalDate due) {
             this.desc = desc;
-            this.due = due; }
+            this.due = due;
+        }
     }
 
     /**
