@@ -80,6 +80,12 @@ public class Wowo {
                     var matches = tasks.find(keyword);
                     ui.showMatches(matches);
 
+                } else if (input.startsWith("sort")) {
+                    Parser.parseSort(input);          // validates it's exactly "sort"
+                    tasks.sortByDateThenName();       // or sortByName() if you prefer
+                    persist();
+                    ui.showList(tasks.asList());
+
                 } else if (!input.isEmpty()) {
                     throw new UnknownCommandException();
                 }
@@ -141,6 +147,12 @@ public class Wowo {
                 String keyword = Parser.parseFind(input);
                 var matches = tasks.find(keyword);
                 return formatMatches(matches);
+
+            } else if (input.startsWith("sort")) {
+                Parser.parseSort(input);          // validates
+                tasks.sortByDateThenName();
+                persist();
+                return "Your tasks have been sorted:\n" + formatList(tasks.asList());
 
             } else {
                 throw new UnknownCommandException();

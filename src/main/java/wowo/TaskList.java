@@ -3,6 +3,8 @@ package wowo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalDate;
+import java.util.Comparator;
 
 /**
  * A list for all task managed by the chatbot
@@ -106,6 +108,33 @@ public class TaskList {
         return out;
     }
 
+    public void sortByName() {
+        // If Task has getName(), prefer that; otherwise fall back to toString()
+        tasks.sort(Comparator.comparing(
+                t -> (t instanceof TaskNameProvider)
+                        ? ((TaskNameProvider) t).getName()
+                        : t.toString(),
+                String.CASE_INSENSITIVE_ORDER
+        ));
+    }
+
+    public void sortByDateThenName() {
+        tasks.sort(
+                Comparator
+                        .comparing(TaskList::dateOrMax) // deadlines/events by date; todos last
+                        .thenComparing(t -> (t instanceof TaskNameProvider)
+                                        ? ((TaskNameProvider) t).getName()
+                                        : t.toString(),
+                                String.CASE_INSENSITIVE_ORDER)
+        );
+    }
+
+    private static LocalDate dateOrMax(Task t) {
+        if (t instanceof Deadline d) return d.getDue();
+        if (t instanceof Event e)    return e.getFrom();   // or e.getTo(), your call
+        return LocalDate.MAX; // Todo (no date) goes after dated tasks
+    }
+
     /**
      * Add multiple tasks
      *
@@ -115,5 +144,9 @@ public class TaskList {
         for (Task t : tasks) {
             add(t);
         }
+    }
+
+    public interface TaskNameProvider {
+        String getName();
     }
 }

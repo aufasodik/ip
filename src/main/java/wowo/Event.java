@@ -23,6 +23,14 @@ public class Event extends Task {
         this.to = to;
     }
 
+    public LocalDate getFrom() {
+        return from;
+    }
+
+    public LocalDate getTo() {
+        return to;
+    }
+
     @Override
     public String getType() {
         return "E";

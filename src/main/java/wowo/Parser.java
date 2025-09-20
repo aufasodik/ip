@@ -117,9 +117,23 @@ public final class Parser {
         }
         return keyword;
     }
+
     /**
-    * Holder for deadline command.
-    */
+     * Parses a "sort" command.
+     *
+     * @param input The raw user command
+     * @throws EmptyDescriptionException if there are extra invalid arguments
+     */
+    public static void parseSort(String input) throws EmptyDescriptionException {
+        String rest = input.trim();
+        if (!rest.equalsIgnoreCase("sort")) {
+            throw new EmptyDescriptionException(); // or make a new exception if you prefer
+        }
+    }
+
+    /**
+     * Holder for deadline command.
+     */
     public static final class DeadlineParts {
         public final String desc;
         public final LocalDate due;
